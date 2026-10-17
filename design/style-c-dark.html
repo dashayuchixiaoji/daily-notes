@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>方案 C · 深夜玻璃</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:1024px;overflow:hidden}
+body{font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;background:#0B0E14;color:#E7EAF3;display:flex;position:relative}
+body:before{content:"";position:absolute;width:780px;height:780px;left:-180px;top:-320px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.32),transparent 70%)}
+body:after{content:"";position:absolute;width:720px;height:720px;right:-220px;bottom:-360px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.20),transparent 70%)}
+.sidebar{position:relative;z-index:2;width:244px;flex:0 0 244px;background:rgba(255,255,255,.035);border-right:1px solid rgba(255,255,255,.07);padding:26px 16px 20px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:0 6px 24px}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366F1,#22D3EE);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 22px rgba(99,102,241,.5)}
+.brand-name{font-size:15px;font-weight:700}
+.brand-sub{font-size:10px;color:#6E7790;letter-spacing:1.4px;margin-top:2px}
+.newbtn{height:44px;border-radius:12px;background:linear-gradient(135deg,#6366F1,#4F46E5);display:flex;align-items:center;justify-content:center;gap:7px;font-size:13.5px;font-weight:700;box-shadow:0 8px 24px rgba(79,70,229,.45)}
+.nav{margin-top:22px;display:flex;flex-direction:column;gap:3px}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;color:#9BA4BC;font-size:13px}
+.ni.active{background:rgba(99,102,241,.16);color:#C7CBFF;font-weight:700;border:1px solid rgba(99,102,241,.28)}
+.ni .ico{width:17px;text-align:center}
+.ni .c{margin-left:auto;font-size:11px;color:#6E7790}
+.sect{font-size:10px;font-weight:700;color:#6E7790;letter-spacing:1.5px;margin:24px 0 9px;padding-left:12px}
+.cats{display:flex;flex-direction:column;gap:2px}
+.cat{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;color:#9BA4BC;font-size:13px}
+.cat i{width:7px;height:7px;border-radius:50%;box-shadow:0 0 8px currentColor}
+.cat span{margin-left:auto;font-size:11px;color:#6E7790}
+.user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#F472B6,#8B5CF6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.user-name{font-size:13px;font-weight:700}
+.user-sub{font-size:10.5px;color:#6E7790;margin-top:2px}
+.main{position:relative;z-index:2;flex:1;padding:30px 34px 0;display:flex;flex-direction:column;min-width:0}
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+h1{font-size:25px;font-weight:700;letter-spacing:.3px}
+.sub{font-size:12.5px;color:#7B849D;margin-top:9px}
+.search{width:306px;height:44px;border-radius:12px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;gap:10px;padding:0 16px;color:#6E7790;font-size:12.5px}
+.chips{display:flex;gap:9px;margin:22px 0 16px}
+.chip{padding:7px 15px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:#9BA4BC}
+.chip.active{background:linear-gradient(135deg,#6366F1,#4F46E5);border-color:transparent;color:#fff;font-weight:700;box-shadow:0 6px 18px rgba(79,70,229,.4)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-content:start;overflow:hidden}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:17px 18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.35);min-height:200px}
+.card.glow{border-color:rgba(99,102,241,.45);box-shadow:0 10px 34px rgba(79,70,229,.30)}
+.ctop{display:flex;align-items:center;justify-content:space-between}
+.pill{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.card h3{font-size:15px;font-weight:700;line-height:1.42}
+.card p{font-size:12.5px;line-height:1.78;color:#96A0B8;flex:1}
+.foot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#6E7790}
+.add{border:1.5px dashed rgba(255,255,255,.16);background:rgba(255,255,255,.02);box-shadow:none;align-items:center;justify-content:center;color:#6E7790;gap:10px;font-size:13px}
+.plus{width:40px;height:40px;border-radius:50%;background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.4);display:flex;align-items:center;justify-content:center;font-size:20px;color:#A5B4FC}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand"><div class="logo">✦</div><div><div class="brand-name">生活记事本</div><div class="brand-sub">DAILY NOTES</div></div></div>
+  <div class="newbtn">＋ 新建笔记</div>
+  <nav class="nav">
+    <a class="ni active"><span class="ico">🗂️</span>全部笔记<span class="c">24</span></a>
+    <a class="ni"><span class="ico">☀️</span>今天<span class="c">3</span></a>
+    <a class="ni"><span class="ico">📅</span>本周<span class="c">9</span></a>
+    <a class="ni"><span class="ico">⭐</span>星标<span class="c">5</span></a>
+    <a class="ni"><span class="ico">🗑️</span>回收站</a>
+  </nav>
+  <div class="sect">我的分类</div>
+  <div class="cats">
+    <div class="cat"><i style="background:#F87171;color:#F87171"></i>生活琐事<span>8</span></div>
+    <div class="cat"><i style="background:#FBBF24;color:#FBBF24"></i>美食菜谱<span>4</span></div>
+    <div class="cat"><i style="background:#34D399;color:#34D399"></i>健康运动<span>3</span></div>
+    <div class="cat"><i style="background:#60A5FA;color:#60A5FA"></i>读书影音<span>5</span></div>
+    <div class="cat"><i style="background:#A78BFA;color:#A78BFA"></i>灵感随手记<span>4</span></div>
+  </div>
+  <div class="user"><div class="avatar">雨</div><div><div class="user-name">小雨</div><div class="user-sub">连续记录 128 天</div></div></div>
+</aside>
+<main class="main">
+  <header class="head">
+    <div><h1>早上好，小雨 ☀️</h1><div class="sub">2026 年 9 月 21 日 · 星期一 · 今天也记一笔吧</div></div>
+    <div class="search">🔍 搜索笔记标题或内容…</div>
+  </header>
+  <div class="chips">
+    <span class="chip active">全部</span><span class="chip">生活琐事</span><span class="chip">美食菜谱</span><span class="chip">健康运动</span><span class="chip">读书影音</span><span class="chip">灵感随手记</span>
+  </div>
+  <section class="grid">
+    <article class="card glow">
+      <div class="ctop"><span class="pill" style="background:rgba(248,113,113,.16);color:#FCA5A5">生活琐事</span><span>⭐</span></div>
+      <h3>周末去菜市场采购</h3>
+      <p>西红柿 3 斤、鸡蛋一板、排骨两斤，顺手买了盒小番茄当零食。</p>
+      <div class="foot"><span>今天 09:12</span><span>📎 1</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(251,191,36,.16);color:#FCD34D">美食菜谱</span><span>☆</span></div>
+      <h3>番茄牛腩 · 第一次做成功</h3>
+      <p>牛腩焯水去沫，小火炖 90 分钟再放番茄，最后收汁放一点糖。</p>
+      <div class="foot"><span>昨天 20:40</span><span>📎 3</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(52,211,153,.16);color:#6EE7B7">健康运动</span><span>☆</span></div>
+      <h3>跑步 5 公里，配速 6'12"</h3>
+      <p>滨江跑道来回，天气凉快跑起来很舒服，拉伸做了 10 分钟。</p>
+      <div class="foot"><span>9 月 19 日 18:30</span><span>📎 0</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(96,165,250,.16);color:#93C5FD">读书影音</span><span>⭐</span></div>
+      <h3>《夜晚的潜水艇》读到第三章</h3>
+      <p>文字像水一样流动，把幻想写得特别安静。摘一句：「记忆是一种液体。」</p>
+      <div class="foot"><span>9 月 18 日 22:05</span><span>📎 0</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(167,139,250,.16);color:#C4B5FD">灵感随手记</span><span>☆</span></div>
+      <h3>想把阳台改造成小花园</h3>
+      <p>先量一下阳台尺寸，装两层置物架，薄荷和迷迭香都很好养活。</p>
+      <div class="foot"><span>9 月 17 日 14:22</span><span>📎 2</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(248,113,113,.16);color:#FCA5A5">生活琐事</span><span>☆</span></div>
+      <h3>九月记账小结</h3>
+      <p>这个月餐饮花了 1280，比上月少了 300，少点外卖真的有用。</p>
+      <div class="foot"><span>9 月 16 日 21:10</span><span>📎 0</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(251,191,36,.16);color:#FCD34D">美食菜谱</span><span>⭐</span></div>
+      <h3>妈妈的红烧排骨做法</h3>
+      <p>排骨煎到微黄，加冰糖炒色，两勺生抽一勺老抽，小火 40 分钟。</p>
+      <div class="foot"><span>9 月 15 日 19:02</span><span>📎 1</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(96,165,250,.16);color:#93C5FD">读书影音</span><span>☆</span></div>
+      <h3>周末去看的那场光影展</h3>
+      <p>站在装置中间会有回声，光影落在地上像水波。门票 60，值得再去。</p>
+      <div class="foot"><span>9 月 14 日 16:45</span><span>📎 4</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(248,113,113,.16);color:#FCA5A5">生活琐事</span><span>☆</span></div>
+      <h3>换季衣服整理清单</h3>
+      <p>羽绒服送干洗，毛衣收进真空袋，夏天的短袖留两件备用。</p>
+      <div class="foot"><span>9 月 13 日 11:30</span><span>📎 0</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(52,211,153,.16);color:#6EE7B7">健康运动</span><span>⭐</span></div>
+      <h3>早睡挑战第 7 天</h3>
+      <p>连续七天 23 点前上床，白天精神明显变好，继续坚持下去。</p>
+      <div class="foot"><span>9 月 12 日 23:05</span><span>📎 0</span></div>
+    </article>
+    <article class="card">
+      <div class="ctop"><span class="pill" style="background:rgba(167,139,250,.16);color:#C4B5FD">灵感随手记</span><span>☆</span></div>
+      <h3>下个月想去的三个地方</h3>
+      <p>近郊的竹林、老城区的旧书店、江边的日落露台，慢慢一个个去。</p>
+      <div class="foot"><span>9 月 11 日 08:20</span><span>📎 0</span></div>
+    </article>
+    <article class="card add"><div class="plus">＋</div><div>写一条新笔记…</div></article>
+  </section>
+</main>
+<script>
+window.addEventListener('load',function(){
+  var o={},d=document;
+  function m(s){var e=d.querySelector(s);if(!e)return null;var r=e.getBoundingClientRect();return [Math.round(r.top),Math.round(r.bottom),Math.round(r.left),Math.round(r.right)];}
+  o.grid=m('.grid');o.card=m('.card');o.docH=d.documentElement.scrollHeight;
+  var cs=d.querySelectorAll('.card');var l=cs[cs.length-1].getBoundingClientRect();
+  o.lastCard=[Math.round(l.top),Math.round(l.bottom)];o.nCards=cs.length;
+  o.h=Array.prototype.map.call(cs,function(c){return Math.round(c.getBoundingClientRect().height);}).join(',');
+  document.title='PROBE'+JSON.stringify(o);
+});
+</script>
+</body>
+</html>

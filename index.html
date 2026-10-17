@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>日常记事本 · 记录每一天</title>
+<meta name="description" content="轻量的生活记事本：添加、编辑、删除笔记，按分类整理，数据只保存在本机。">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+</head>
+<body>
+<div class="notice" id="fileNotice" hidden>
+  <span>💡 小提示：你现在是直接打开本地网页文件的，笔记会保存在这个浏览器里。如果发现笔记没有保存，改用项目里的「启动记事本.bat」打开即可。</span>
+  <button class="notice-btn" type="button" id="noticeBackup">导出备份</button>
+  <button class="notice-x" type="button" id="noticeClose">知道了</button>
+</div>
+
+
+<!-- ============ 侧边栏 ============ -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark">📖</div>
+    <div>
+      <div class="brand-name">日常记事本</div>
+      <div class="brand-sub">DAILY NOTES</div>
+    </div>
+    <button class="sidebar-close" id="sidebarClose" type="button" aria-label="收起菜单">✕</button>
+  </div>
+
+  <button class="new-btn" type="button" data-new-note>＋ 新建笔记</button>
+
+  <nav class="nav" id="viewNav">
+    <a class="nav-item" data-view="all" href="#all"><span class="ico">🗂️</span>全部笔记<span class="count" data-count="all">0</span></a>
+    <a class="nav-item" data-view="today" href="#today"><span class="ico">☀️</span>今天<span class="count" data-count="today">0</span></a>
+    <a class="nav-item" data-view="week" href="#week"><span class="ico">📅</span>本周<span class="count" data-count="week">0</span></a>
+    <a class="nav-item" data-view="starred" href="#starred"><span class="ico">⭐</span>星标笔记<span class="count" data-count="starred">0</span></a>
+    <a class="nav-item" data-view="trash" href="#trash"><span class="ico">🗑️</span>回收站<span class="count" data-count="trash">0</span></a>
+  </nav>
+
+  <div class="nav-title">
+    <span>我的分类</span>
+    <button class="mini" type="button" id="manageCatsBtn" title="管理分类">＋</button>
+  </div>
+  <div class="cats" id="catList"></div>
+
+  <div class="user">
+    <div class="avatar">雨</div>
+    <div class="user-info">
+      <div class="user-name">我的记事本</div>
+      <div class="user-sub" id="userSub">已记录 0 条</div>
+    </div>
+    <button class="more-btn" type="button" id="moreBtn" aria-label="更多">⋯</button>
+  </div>
+</aside>
+<div class="sidebar-mask" id="sidebarMask"></div>
+
+<!-- ============ 主区域 ============ -->
+<main class="main">
+  <header class="head">
+    <div class="head-text">
+      <button class="menu-btn" type="button" id="menuBtn" aria-label="打开菜单">☰</button>
+      <div>
+        <h1 id="greeting">你好 ☀️</h1>
+        <p class="sub" id="todayLine"></p>
+      </div>
+    </div>
+    <div class="head-actions">
+      <div class="search" id="searchBox">
+        <span class="search-ico">🔍</span>
+        <input id="searchInput" type="search" placeholder="搜索笔记标题或内容…" autocomplete="off" aria-label="搜索笔记">
+        <button class="search-clear" type="button" id="searchClear" aria-label="清空搜索" hidden>✕</button>
+      </div>
+      <button class="mini-new" type="button" data-new-note>＋ 新建笔记</button>
+    </div>
+  </header>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="list-head" id="listHead"></div>
+
+  <section class="grid" id="grid"></section>
+
+  <div class="empty" id="empty" hidden>
+    <div class="empty-ico" id="emptyIco">🌱</div>
+    <h2 id="emptyTitle">还没有笔记</h2>
+    <p id="emptyText">写下第一条笔记，开始记录你的日常。</p>
+    <button class="bp" type="button" data-new-note id="emptyBtn">＋ 新建笔记</button>
+  </div>
+</main>
+
+<button class="fab" type="button" data-new-note aria-label="新建笔记">＋</button>
+
+<!-- ============ 新建 / 编辑 弹窗 ============ -->
+<div class="modal" id="noteModal" hidden>
+  <div class="modal-mask" data-close></div>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="noteModalTitle">
+    <h2 id="noteModalTitle">新建笔记</h2>
+    <p class="tip" id="noteModalTip">记录此刻的想法，随时可以回来修改</p>
+
+    <div class="field">
+      <label for="noteTitle">标题</label>
+      <input class="input" id="noteTitle" type="text" maxlength="60" placeholder="给这条笔记起个名字…">
+    </div>
+
+    <div class="field">
+      <label>分类</label>
+      <div class="picker" id="catPicker"></div>
+    </div>
+
+    <div class="field">
+      <label for="noteContent">内容</label>
+      <textarea class="textarea" id="noteContent" placeholder="今天发生了什么？"></textarea>
+    </div>
+
+    <div class="dfoot">
+      <span class="hint">Ctrl + Enter 保存 · Esc 取消</span>
+      <div class="btns">
+        <button class="bg" type="button" data-close>取消</button>
+        <button class="bp" type="button" id="saveNoteBtn">保存笔记</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 确认弹窗 ============ -->
+<div class="modal" id="confirmModal" hidden>
+  <div class="modal-mask" data-close></div>
+  <div class="dialog small" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="danger-icon" id="confirmIcon">🗑️</div>
+    <h2 id="confirmTitle">确认操作？</h2>
+    <p id="confirmText"></p>
+    <div class="dfoot" style="margin-top:20px">
+      <span class="hint" id="confirmHint"></span>
+      <div class="btns">
+        <button class="bg" type="button" data-close>取消</button>
+        <button class="bd" type="button" id="confirmOk">删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 分类管理 ============ -->
+<div class="modal" id="catModal" hidden>
+  <div class="modal-mask" data-close></div>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="catModalTitle">
+    <h2 id="catModalTitle">管理分类</h2>
+    <p class="tip">分类用于把笔记分组，删除分类不会删除笔记</p>
+    <div class="cat-manage" id="catManageList"></div>
+    <div class="add-cat">
+      <input class="input" id="newCatName" type="text" maxlength="12" placeholder="新分类名称，例如：旅行记录">
+      <button class="bp" type="button" id="addCatBtn">添加</button>
+    </div>
+    <div class="dfoot">
+      <span class="hint" id="catHint">最多可创建 12 个分类</span>
+      <div class="btns"><button class="bg" type="button" data-close>完成</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 更多菜单 ============ -->
+<div class="modal" id="moreModal" hidden>
+  <div class="modal-mask" data-close></div>
+  <div class="dialog small" role="dialog" aria-modal="true" aria-labelledby="moreTitle">
+    <h2 id="moreTitle">备份与还原</h2>
+    <p>笔记只保存在这台设备的浏览器里。换设备或清理浏览器数据前，建议先导出一份备份。</p>
+    <div class="more-list">
+      <button class="more-item" type="button" id="exportBtn"><span>📤</span><span>导出备份（JSON 文件）</span></button>
+      <button class="more-item" type="button" id="importBtn"><span>📥</span><span>导入备份（选择 JSON 文件）</span></button>
+      <button class="more-item danger" type="button" id="clearAllBtn"><span>⚠️</span><span>清空全部笔记</span></button>
+    </div>
+    <div class="dfoot"><span class="hint" id="moreHint"></span><div class="btns"><button class="bg" type="button" data-close>关闭</button></div></div>
+  </div>
+</div>
+
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+<div class="toast" id="toast" hidden></div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>方案 B · 清爽极简</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:1024px;overflow:hidden}
+body{font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;background:#F7F8FA;color:#1F2430;display:flex;font-size:13px}
+.sidebar{width:224px;flex:0 0 224px;background:#fff;border-right:1px solid #EDEFF3;padding:24px 14px 18px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;padding:0 6px 22px}
+.logo{width:32px;height:32px;border-radius:9px;background:#3B82F6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800}
+.brand-name{font-size:14.5px;font-weight:700}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;color:#5A6274;font-size:13px}
+.nav-item.active{background:#EFF5FF;color:#2563EB;font-weight:700}
+.nav-item .ico{width:16px;text-align:center;font-size:13px}
+.nav-item .count{margin-left:auto;font-size:11px;color:#A6ADBB}
+.sect{font-size:10.5px;font-weight:700;color:#A6ADBB;letter-spacing:1.3px;padding:0 11px;margin:22px 0 8px}
+.tagline{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:8px;color:#5A6274;font-size:12.5px}
+.tagline i{width:8px;height:8px;border-radius:2.5px}
+.tagline span{margin-left:auto;font-size:11px;color:#A6ADBB}
+.newbtn{margin-top:auto;background:#1F2430;color:#fff;border-radius:10px;height:40px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700}
+.list{width:372px;flex:0 0 372px;background:#fff;border-right:1px solid #EDEFF3;display:flex;flex-direction:column}
+.list-head{padding:22px 20px 13px}
+.list-title{display:flex;align-items:center;justify-content:space-between}
+.list-title h2{font-size:18px;font-weight:700}
+.count-badge{font-size:11px;color:#2563EB;background:#EFF5FF;border-radius:999px;padding:3px 9px;font-weight:700}
+.searchbox{margin-top:13px;height:38px;border-radius:9px;background:#F5F6F9;display:flex;align-items:center;gap:8px;padding:0 12px;color:#A6ADBB;font-size:12.5px}
+.filters{display:flex;gap:7px;padding:0 20px 12px}
+.f{padding:5px 12px;border-radius:999px;background:#F5F6F9;font-size:12px;color:#5A6274}
+.f.active{background:#1F2430;color:#fff;font-weight:700}
+.items{flex:1;overflow:hidden;padding:0 12px}
+.item{padding:13px 12px 13px 14px;border-radius:10px;margin-bottom:2px;border-left:3px solid transparent}
+.item.active{background:#F2F7FF;border-left-color:#3B82F6}
+.item-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.item h4{font-size:13.5px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+.item p{font-size:12px;color:#8C93A3;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .time{font-size:11px;color:#A6ADBB;margin-top:7px;display:block}
+.editor{flex:1;display:flex;flex-direction:column;min-width:0;background:#fff}
+.ed-bar{height:56px;border-bottom:1px solid #EDEFF3;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:0 0 56px}
+.ed-left{display:flex;align-items:center;gap:9px;font-size:12px;color:#A6ADBB}
+.save{display:flex;align-items:center;gap:6px}
+.save i{width:6px;height:6px;border-radius:50%;background:#34C759;display:block}
+.ed-actions{display:flex;align-items:center;gap:8px}
+.ibtn{width:34px;height:34px;border-radius:9px;background:#F5F6F9;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5A6274}
+.del{background:#FFF1F0;color:#E5484D}
+.ed-body{padding:32px 62px;flex:1;overflow:hidden}
+.ed-meta{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.pill{font-size:11px;font-weight:700;padding:4px 11px;border-radius:999px;background:#FFF3E6;color:#C97C1F}
+.ed-meta time{font-size:11.5px;color:#A6ADBB}
+.ed-body h1{font-size:26px;font-weight:700;line-height:1.35;margin-bottom:18px}
+.ed-body h5{font-size:13px;color:#2563EB;font-weight:700;margin:20px 0 8px}
+.ed-body p{font-size:13.5px;line-height:1.95;color:#3D4453}
+.ed-body ul{margin:4px 0 0 2px;list-style:none}
+.ed-body li{font-size:13.5px;line-height:1.95;color:#3D4453;padding-left:20px;position:relative}
+.ed-body li:before{content:"";position:absolute;left:4px;top:12px;width:5px;height:5px;border-radius:50%;background:#C4CAD6}
+.quote{margin-top:18px;padding:13px 18px;border-left:3px solid #DCE6F5;background:#F8FAFD;border-radius:0 8px 8px 0;font-size:13px;color:#6B7488;line-height:1.9}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand"><div class="logo">记</div><div class="brand-name">生活记事本</div></div>
+  <nav class="nav">
+    <a class="nav-item active"><span class="ico">🗂️</span>全部笔记<span class="count">24</span></a>
+    <a class="nav-item"><span class="ico">☀️</span>今天<span class="count">3</span></a>
+    <a class="nav-item"><span class="ico">📅</span>本周<span class="count">9</span></a>
+    <a class="nav-item"><span class="ico">⭐</span>星标<span class="count">5</span></a>
+    <a class="nav-item"><span class="ico">🗑️</span>回收站</a>
+  </nav>
+  <div class="sect">分类标签</div>
+  <div class="tagline"><i style="background:#E5484D"></i>生活琐事<span>8</span></div>
+  <div class="tagline"><i style="background:#F5A524"></i>美食菜谱<span>4</span></div>
+  <div class="tagline"><i style="background:#17A34A"></i>健康运动<span>3</span></div>
+  <div class="tagline"><i style="background:#3B82F6"></i>读书影音<span>5</span></div>
+  <div class="tagline"><i style="background:#8B5CF6"></i>灵感随手记<span>4</span></div>
+  <div class="newbtn">＋ 新建笔记</div>
+</aside>
+<section class="list">
+  <div class="list-head">
+    <div class="list-title"><h2>全部笔记</h2><span class="count-badge">24 条</span></div>
+    <div class="searchbox">🔍 搜索标题或内容…</div>
+  </div>
+  <div class="filters"><span class="f active">全部</span><span class="f">最近 7 天</span><span class="f">星标</span></div>
+  <div class="items">
+    <div class="item active">
+      <div class="item-top"><span class="dot" style="background:#E5484D"></span><h4>周末去菜市场采购</h4></div>
+      <p>西红柿 3 斤、鸡蛋一板、排骨两斤，顺手买了盒小番茄当零食。</p>
+      <span class="time">今天 09:12</span>
+    </div>
+    <div class="item">
+      <div class="item-top"><span class="dot" style="background:#F5A524"></span><h4>番茄牛腩 · 第一次做成功</h4></div>
+      <p>牛腩焯水去沫，小火炖 90 分钟再放番茄，最后收汁放一点糖。</p>
+      <span class="time">昨天 20:40</span>
+    </div>
+    <div class="item">
+      <div class="item-top"><span class="dot" style="background:#17A34A"></span><h4>跑步 5 公里，配速 6'12"</h4></div>
+      <p>滨江跑道来回，天气凉快跑起来很舒服，拉伸做了 10 分钟。</p>
+      <span class="time">9 月 19 日 18:30</span>
+    </div>
+    <div class="item">
+      <div class="item-top"><span class="dot" style="background:#3B82F6"></span><h4>《夜晚的潜水艇》读到第三章</h4></div>
+      <p>文字像水一样流动，把幻想写得特别安静。摘一句：「记忆是一种液体。」</p>
+      <span class="time">9 月 18 日 22:05</span>
+    </div>
+    <div class="item">
+      <div class="item-top"><span class="dot" style="background:#8B5CF6"></span><h4>想把阳台改造成小花园</h4></div>
+      <p>先量一下阳台尺寸，装两层置物架，薄荷和迷迭香都很好养活。</p>
+      <span class="time">9 月 17 日 14:22</span>
+    </div>
+    <div class="item">
+      <div class="item-top"><span class="dot" style="background:#E5484D"></span><h4>九月记账小结</h4></div>
+      <p>这个月餐饮花了 1280，比上月少了 300，少点外卖真的有用。</p>
+      <span class="time">9 月 16 日 21:10</span>
+    </div>
+    <div class="item">
+      <div class="item-top"><span class="dot" style="background:#F5A524"></span><h4>妈妈的红烧排骨做法</h4></div>
+      <p>排骨煎到微黄，加冰糖炒色，两勺生抽一勺老抽，小火 40 分钟。</p>
+      <span class="time">9 月 15 日 19:02</span>
+    </div>
+  </div>
+</section>
+<main class="editor">
+  <div class="ed-bar">
+    <div class="ed-left"><span class="save"><i></i>已自动保存</span><span>·</span><span>2026-09-21 09:12</span></div>
+    <div class="ed-actions">
+      <div class="ibtn">⭐</div><div class="ibtn">📤</div><div class="ibtn del">🗑️</div>
+    </div>
+  </div>
+  <div class="ed-body">
+    <div class="ed-meta"><span class="pill">生活琐事</span><time>星期一 · 晴 · 24℃</time></div>
+    <h1>周末去菜市场采购</h1>
+    <p>早上八点出门，菜市场比想象中热闹。先去常去的那家摊位买了西红柿，老板说这批是本地大棚的，比上周的甜。</p>
+    <h5>采购清单</h5>
+    <ul>
+      <li>西红柿 3 斤（挑硬一点的，能放一周）</li>
+      <li>鸡蛋一板（30 个，散养的 22 元）</li>
+      <li>排骨两斤，让师傅剁成小块</li>
+      <li>小番茄一盒，当零食吃</li>
+    </ul>
+    <h5>其他记录</h5>
+    <p>摊主阿姨说下周板栗就上新了，记得去晚一点更便宜。回家路上顺路取了快递，是上次买的花盆，打算周末把阳台收拾一下。</p>
+    <div class="quote">回忆：去年的这个时候也在同一个摊位买过菜，摊主还记得我，问「今年还做糖醋排骨吗」。</div>
+  </div>
+</main>
+<script>
+window.addEventListener('load',function(){
+  var o={},d=document;
+  function m(s){var e=d.querySelector(s);if(!e)return null;var r=e.getBoundingClientRect();return [Math.round(r.top),Math.round(r.bottom),Math.round(r.left),Math.round(r.right)];}
+  o.items=m('.items');o.item1=m('.item');o.edbody=m('.ed-body');o.docH=d.documentElement.scrollHeight;
+  var is=d.querySelectorAll('.item');var l=is[is.length-1].getBoundingClientRect();o.lastItem=[Math.round(l.top),Math.round(l.bottom)];o.nItems=is.length;
+  var eb=d.querySelector('.ed-body');o.edScroll=[eb.scrollHeight,Math.round(eb.getBoundingClientRect().height)];
+  document.title='PROBE'+JSON.stringify(o);
+});
+</script>
+</body>
+</html>
